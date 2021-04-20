@@ -1,0 +1,74 @@
+#!/usr/bin/python3
+import os 
+import pandas as pd
+
+#Need to pip install pandas and possibly anaconda
+##Wanted output is (Name Hours Rate Grosspay Fed-Tax State-Tax FICA Netpay)##
+ 
+fedtax = .1
+statetax = .03
+ficarate = .07
+ot = 1.5
+answer = None
+emplist = []
+
+while ( answer == 'yes' or answer == None ):
+     
+    os.system('clear')
+    name = input("Enter ACME Employee's name: \n")  
+    #loops until input is float
+    while True:
+        try:
+            hours = float(input("How many hours did ({}) work? \n".format(name)))
+            os.system('clear')
+            break
+        except ValueError:
+            os.system('clear')
+            print('Please enter a number')
+    while True:
+        try:
+            rate = float(input("What is ({})'s pay rate?: \n".format(name)))
+            os.system('clear')
+            break
+        except ValueError:
+            os.system('clear')
+            print('Please enter a number')
+
+    #Calulations
+    if ( float(hours) <= 40.00 ):
+        gross = ('{:.2f}'.format((float(hours) * float(rate))))
+    else:
+        gross = ('{:.2f}'.format(((float(hours)-40.0) * (float(ot)* float(rate)) + (float(rate)*40.0) )))
+    fed = ('{:.2f}'.format(fedtax * float(gross)))
+    state = ('{:.2f}'.format(statetax * float(gross)))
+    fica = ('{:.2f}'.format(ficarate * float(gross)))
+    net = ('{:.2f}'.format(float(gross) - (fedtax + statetax + ficarate) * float(gross)))
+
+    #Set Dictionary Values
+    name = {
+        'EMPLOYE-NAME' : name,
+        'HOURS' : hours,
+        'RATE' : rate,
+        'GROSS-PAY' :  gross,
+        'Fed-Tax' : fed,
+        'STATE-TAX' : state,
+        'FICA' : fica,
+        'NET-PAY' : net
+    }
+    emplist.append(name)
+
+    #Yes or No
+    answer = None
+    while answer not in ('yes','no'):
+        answer = input('Do you want to enter another employee? \n(yes or no): ')
+        
+        os.system('clear') 
+        if (answer == 'yes'):
+            continue 
+        else:  
+            print('Please enter yes or no')
+            os.system('clear') 
+
+df = pd.DataFrame(emplist)
+pd.set_option('colheader_justify', 'center')
+print(df)
