@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+import os 
+
+fedtax = .1
+statetax = .03
+ficarate = .07
+ot = 1.5
+
+#Accept user input and save it as a variable
+os.system('clear')
+name = input("Enter ACME Employee name: \n")
+os.system('clear')
+hours = input("Enter ACME Employee's Hours Worked: \n")
+os.system('clear')
+rate = input("Enter ACME Employee's Pay Rate: \n")
+os.system('clear')
+
+
+#If hours > 40, use Over time rate
+if ( float(hours) < 40.00 ):
+    gross = ('{:.2f}'.format((float(hours) * float(rate) * ot )))
+else:
+    gross = ('{:.2f}'.format(float(hours) * float(ot)))
+
+#Calculations
+fed = ('{:.2f}'.format(fedtax * float(gross)))
+state = ('{:.2f}'.format(statetax * float(gross)))
+fica = ('{:.2f}'.format(ficarate * float(gross)))
+net = ('{:.2f}'.format(float(gross) - (fedtax + statetax + ficarate) * float(gross)))
+
+#Output
+print("Name Hours  Rate  GrossPay  Fed-Tax State-Tax FICA  Netpay")
+print(name,'  ',hours,'   $',rate,'   $',gross,'    $',fed,'  $',state,'  $',fica,' $',net,sep='')
